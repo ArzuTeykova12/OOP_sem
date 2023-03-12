@@ -200,7 +200,7 @@ int main()
 		std::cin >> fn;
 
 		char new_email[MAX_SIZE];
-		std::cout << "Нов имейл: " << std::endl;
+		std::cout << "New email: " << std::endl;
 		std::cin >> new_email;
 
 		updateEmail(collection, fn, new_email, size);
