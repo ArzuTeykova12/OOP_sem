@@ -6,7 +6,6 @@
 #pragma warning (disable : 4996)
 
 const size_t MAX_SIZE = 1024;
-const size_t MAX_SIZEe = 1000;
 const unsigned SPEC_DIGIT_POS = 4;
 
 enum class Major
@@ -132,101 +131,47 @@ void printByFn(const StudentsCollection& collection, const char* fn, size_t size
 	}
 }
 
-void print(std::fstream& file, const char fileName[])
+void updateEmail(const StudentsCollection& collection, const char* fn, const char* new_email, int size)
 {
-	Student studentInfo;
-	file.clear();
-	file.seekg(0);
-	std::cout << std::setw(MAX_SIZE) << setiosflags(std::ios::left)
-		<< "Име" << '|' << resetiosflags(std::ios::left) << std::setw(MAX_SIZE)
-		<< "Имейл" << '|' << std::setw(MAX_SIZE)
-		<< "Факултетен номер" << std::endl;
-	while (file.read((char*)&studentInfo, sizeof(studentInfo)))
-	{
-		std::cout << studentInfo.firstName << ", "
-			<< studentInfo.lastName << ", " << studentInfo.email
-			<< ", " << studentInfo.fn;
-	}
-	
-}
-
-void update(const StudentsCollection& collection, const char* fn, size_t size)
-{
-	char new_email[MAX_SIZE];
-	std::cout << "Нов имейл: " << std::endl;
-	std::cin >> new_email;
-	int new_sizeEmail = strlen(new_email) + 1;
-	for (size_t i = 0; i < size; i++)
+	for (int i = 0; i < size; i++)
 	{
 		if (strcmp(collection.data[i].fn, fn) == 0)
 		{
-			strcpy(collection.data[i].email, new_email);
+			strncpy(collection.data[i].email, new_email, MAX_SIZE);
+			return;
 		}
 	}
-
 }
-
-//void updateEmail(const char fileName[], const char* fn, Student& s)
-//{
-//	std::cout << "Данни за студента: " << std::endl;
-//	Student studentInfo;
-//	
-//	std::cout << studentInfo.firstName << ", " 
-//		<< studentInfo.lastName << ", " << studentInfo.email 
-//		<< ", " << studentInfo.fn << std::endl;
-//	char new_email;
-//	std::cout << "Нов имейл: " << std::endl;
-//	std::cin >> new_email;
-//	
-//	//s.email = new_email;
-//
-//	//studentInfo.email = new_email;
-//
-//}
-
-int save(std::fstream& file, const char fileName[])
-{
-	Student studentInfo;
-	std::ofstream output("students2.cvc");
-	if (!output)
-	{
-		return -1;
+void save(const StudentsCollection& collection, const char* fileName, int size) {
+	
+	std::ofstream outputFile("students2.csv");
+	if (!outputFile.is_open()) {
+		std::cout << "Error: Unable to create file " << fileName << std::endl;
+		return;
 	}
 	//header
-	output << std::setw(MAX_SIZE) << setiosflags(std::ios::left)
+	outputFile << std::setw(MAX_SIZE) << setiosflags(std::ios::left)
 		<< "Име" << '|' << resetiosflags(std::ios::left) << std::setw(MAX_SIZE)
 		<< "Имейл" << '|' << std::setw(MAX_SIZE)
 		<< "Факултетен номер" << std::endl;
 
-	file.clear();
-	file.seekg(0);
-
-	while (file.read((char*)&studentInfo, sizeof(studentInfo)))
-	{
-		if (!(output << studentInfo.firstName << ", "
-			<< studentInfo.lastName << ", " << studentInfo.email
-			<< ", " << studentInfo.fn))
-		{
-			std::cout << "Записът в текстов файл е неуспешен" << std::endl;
-			output.close();
-			return 1;
-		}
-		
+	for (int i = 0; i < size; i++) {
+		outputFile << collection.data[i].firstName << ","
+			<< collection.data[i].lastName << "," << collection.data[i].email
+			<< "," << collection.data[i].fn << std::endl;
 	}
-	output.close();
-	std::cout << "Информацията е записана в students2.cvc" << std::endl;
-	return 0;
+	outputFile.close();
+	std::cout << "The information is saved in students2.csv" << std::endl;
+	return;
 }
+
+
 int main()
 {
 	std::cout << "Open file: ";
 	char fileName[MAX_SIZE];
 	std::cin >> fileName;
 
-	
-	//
-	std::fstream fileStudent;
-		 
 	StudentsCollection collection;
 	int size = fillStudentsCollection(collection, fileName);
 	if (size == -1)
@@ -248,12 +193,18 @@ int main()
 		std::cout << std::endl;
 	}
 	// HW: Implement the rest of the commands
+
 	if (strcmp(command, "edite") == 0)
 	{
 		char fn[MAX_SIZE];
 		std::cin >> fn;
-		
-		update(collection, fn, size);
+
+		char new_email[MAX_SIZE];
+		std::cout << "Нов имейл: " << std::endl;
+		std::cin >> new_email;
+
+		updateEmail(collection, fn, new_email, size);
+
 		std::cout << std::endl;
 	}
 	if (strcmp(command, "save") == 0)
@@ -261,7 +212,8 @@ int main()
 		char fn[MAX_SIZE];
 		std::cin >> fn;
 
-		save(fileStudent, fn);
+		save(collection, "students2.csv", size);
+
 		std::cout << std::endl;
 	}
 
