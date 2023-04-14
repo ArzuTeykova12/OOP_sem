@@ -8,18 +8,14 @@ void EventCollection::addEvent(const Event& event)
 		return false;
 	}
 	
-	event[eventNum] = event; // ïğàâèì êîïèå íà ïîäàäåíîòî ñúáèòèå
+	event[eventNum] = event; 
 	eventNum++;
 
 	return true;
 }
 void EventCollection::removeEvent(char* name)
 {
-	//if (name >= eventNum)
-	//	return;
-	//event[eventNum] = event[eventNum - 1]; //std::swap(event[eventNum], event[eventNum - 1]);
-	//eventNum--;
-
+	
 	int index = -1;
 	for (int i = 0; i < eventNum; i++) {
 		if (strcmp(event[i].name(), name) == 0) {
@@ -28,7 +24,7 @@ void EventCollection::removeEvent(char* name)
 		}
 	}
 	if (index == -1) {
-		return; // íå å íàìåğåíî ñúáèòèå ñ òàêîâà èìå
+		return; // Ã­Ã¥ Ã¥ Ã­Ã Ã¬Ã¥Ã°Ã¥Ã­Ã® Ã±ÃºÃ¡Ã¨Ã²Ã¨Ã¥ Ã± Ã²Ã ÃªÃ®Ã¢Ã  Ã¨Ã¬Ã¥
 	}
 	for (int i = index; i < eventNum - 1; i++) {
 		std::swap(event[i], event[i + 1]);
