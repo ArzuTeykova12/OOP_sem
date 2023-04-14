@@ -24,7 +24,7 @@ void EventCollection::removeEvent(char* name)
 		}
 	}
 	if (index == -1) {
-		return; // íå å íàìåðåíî ñúáèòèå ñ òàêîâà èìå
+		return; 
 	}
 	for (int i = index; i < eventNum - 1; i++) {
 		std::swap(event[i], event[i + 1]);
