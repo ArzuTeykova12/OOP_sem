@@ -56,5 +56,4 @@ int EventCollection::maxEvent(const Date& date) const
 		}
 	}
 	return numEvents;
-
 }
