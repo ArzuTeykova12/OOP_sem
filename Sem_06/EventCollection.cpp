@@ -37,11 +37,11 @@ Event* EventCollection::theLongestEvent() const
 	const Event* longest = event[0];
 	for (int i = 1; i < eventNum; i++)
 	{
-		unsigned int longestDuration = longest->getStartTime().getMinutes();
-		unsigned int currentDuration = event[i].getStartTime().getMinutes();
+		unsigned int longestE = longest->getStartTime();
+		unsigned int currentE = event[i].getStartTime();
 
 
-		if (currentDuration > longestDuration) {
+		if (currentE > longestE) {
 			longest = event[i];
 		}
 	}
@@ -50,7 +50,7 @@ Event* EventCollection::theLongestEvent() const
 int EventCollection::maxEvent(const Date& date) const
 {
 	int numEvents = 0;
-	for (int i = 0; i < eventNum_; i++) {
+	for (int i = 0; i < eventNum; i++) {
 		if (event[i].getDate().isEqualTo(date)) { 
 			numEvents++;
 		}
