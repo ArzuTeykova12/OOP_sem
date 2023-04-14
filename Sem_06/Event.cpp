@@ -28,8 +28,8 @@ int Event::dayOfWeekEvent() const
 
 void Event::print() const
 {
-	std::cout << std::setw(2) << std::setfill('0') << name << '.' << std::setw(2) << std::setfill('0') << getDate << '.';
-	std::cout << std::setw(3) << std::setfill('0') << getStartTime;
+	std::cout << std::setw(2) << std::setfill('0') << name << '.' << std::setw(2) << std::setfill('0') << date << '.';
+	std::cout << std::setw(3) << std::setfill('0') << startTime;
 }
 
 const char* Event::getName() const
